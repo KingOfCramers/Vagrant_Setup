@@ -6,6 +6,21 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "./Scripts", "/home/vagrant", type: "virtualbox"
 
   config.vm.hostname = "myvm"
+	
+  # Copy the path to the private key to login. Use Vagrant's default as a backup. https://ermaker.github.io/blog/2015/11/18/change-insecure-key-to-my-own-key-on-vagrant.html
+  config.ssh.private_key_path = ["~/.ssh/id_rsa", "~/.vagrant.d/insecure_private_key"] 
+  
+  # Copy public key to VM.
+  config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/authorized_keys"
+
+  # Do not insert a randomly generated key.
+  config.ssh.insert_key = false
+
+  # Turn off password access (to prevent unauthorized access through vagrant user)
+  config.vm.provision "shell", inline: <<-EOC
+  sudo sed -i -e "\\#PasswordAuthentication yes# s#PasswordAuthentication yes#PasswordAuthentication no#g" /etc/ssh/sshd_config
+    sudo service ssh restart
+  EOC
 
   # Open ports for Node.js and MongoDB
   config.vm.network "forwarded_port", guest: 3000, host: 3000 # Node.js

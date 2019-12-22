@@ -50,5 +50,9 @@ fi
 # Install Vundle package manager for Vim for vagrant user...
 git clone https://github.com/VundleVim/Vundle.vim.git /home/vagrant/.vim/bundle/Vundle.vim
 
+# Install iTerm2 Integration
+curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash
+
+
 
 echo "Provisioning complete."
