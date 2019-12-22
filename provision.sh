@@ -47,8 +47,8 @@ if [ "" == "$YARN_INSTALLED" ]; then
   export PATH="$PATH:$(yarn global bin)" ## Add yarn to executable path...
 fi
 
-# Install Vundle package manager for Vim.
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+# Install Vundle package manager for Vim for vagrant user...
+git clone https://github.com/VundleVim/Vundle.vim.git /home/vagrant/.vim/bundle/Vundle.vim
 
 
 echo "Provisioning complete."
