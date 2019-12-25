@@ -24,8 +24,8 @@ if [ "" == "$MONGO_INSTALLED" ]; then
  sudo apt-get update
  sudo apt-get install -y mongodb-org
  sudo chmod +w /etc/mongod.conf
- sudo sed -i 's/\ \ bindIp:\ 127.0.0.1/  bindIp: 0.0.0.0/g' /etc/mongod.conf
- sudo service mongod restart
+ # sudo sed -i 's/\ \ bindIp:\ 127.0.0.1/  bindIp: 0.0.0.0/g' /etc/mongod.conf
+ # sudo service mongod restart ## Configure MongoDB administrative instance...
 fi
 
 # Node.js
@@ -47,12 +47,14 @@ if [ "" == "$YARN_INSTALLED" ]; then
   export PATH="$PATH:$(yarn global bin)" ## Add yarn to executable path...
 fi
 
+# Install ESLint globally...
+npm -i -g eslint ## Run eslint --init in a project to set up eslint
+
 # Install Vundle package manager for Vim for vagrant user...
 git clone https://github.com/VundleVim/Vundle.vim.git /home/vagrant/.vim/bundle/Vundle.vim
+## Make sure to install vim plugins, through vim :PluginInstall
 
 # Install iTerm2 Integration
-curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash
-
-
+# curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash
 
 echo "Provisioning complete."
