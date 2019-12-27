@@ -47,8 +47,16 @@ if [ "" == "$YARN_INSTALLED" ]; then
   export PATH="$PATH:$(yarn global bin)" ## Add yarn to executable path...
 fi
 
+# Install NPM
+sudo apt-get install npm
+
+# Install Tmux
+sudo apt-get install tmux
+
 # Install ESLint globally...
 npm -i -g eslint ## Run eslint --init in a project to set up eslint
+
+
 
 # Install Vundle package manager for Vim for vagrant user...
 git clone https://github.com/VundleVim/Vundle.vim.git /home/vagrant/.vim/bundle/Vundle.vim
