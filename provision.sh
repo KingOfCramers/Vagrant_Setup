@@ -46,23 +46,26 @@ if [ "" == "$YARN_INSTALLED" ]; then
   sudo apt-get install yarn
   export PATH="$PATH:$(yarn global bin)" ## Add yarn to executable path...
 fi
+ 
+# Install oh-my-zsh synatax highlighting plugin...
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/vagrant/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
 # Install NPM
-sudo apt-get install npm
+sudo apt-get install npm -y
 
 # Install Tmux
 sudo apt-get install tmux
 
 # Install ESLint globally...
-npm -i -g eslint ## Run eslint --init in a project to set up eslint
-
-
-
-# Install Vundle package manager for Vim for vagrant user...
-git clone https://github.com/VundleVim/Vundle.vim.git /home/vagrant/.vim/bundle/Vundle.vim
 ## Make sure to install vim plugins, through vim :PluginInstall
+sudo npm install eslint -g 
+
+# Install Vim-Plug package manager for Vim for vagrant user...
+curl -fLo /home/vagrant/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # Install iTerm2 Integration
-# curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash
+curl -L https://iterm2.com/shell_integration/zsh \
+-o /home/vagrant/.iterm2_shell_integration.zsh
 
 echo "Provisioning complete."
