@@ -48,6 +48,9 @@ Vagrant.configure("2") do |config|
   # Copy in my .vimrc file
   config.vm.provision "file", source: "~/.vimrc", destination: ".vimrc"
 
+  # Copy in my .tmux.conf file
+  config.vm.provision "file", source: "~/.tmux.conf", destination: ".tmux.conf"
+
   # Copy over GIT configuration
   config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig"
 
