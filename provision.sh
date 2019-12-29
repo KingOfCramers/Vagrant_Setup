@@ -2,23 +2,29 @@
 
 # Packages
 NODE="nodejs"
-BUILD_ESSENTIAL="build-essential"
 MONGO="mongodb-org"
 GIT="git"
 YARN="yarn"
+NPM="npm"
+TMUX="tmux"
+
+isInstalled(){
+  let answer=$(sudo dpkg -l | awk '{print $2}' | grep -E ^"${1}"$ | wc -l)
+  echo $answer
+};
 
 # Prerequisites
-GIT_INSTALLED=$(dpkg-query -W --showformat='${Status}\n' $GIT | grep "install ok installed")
-echo "Checking for $GIT: $GIT_INSTALLED"
-if [ "" == "$GIT_INSTALLED" ]; then
+GIT_INSTALLED=$(isInstalled "${GIT}");
+echo "Checking for $GIT"
+if [ 0 == "${GIT_INSTALLED}" ]; then
  apt-get update
  apt-get install -y $GIT
 fi
 
 # MongoDB https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
-MONGO_INSTALLED=$(dpkg-query -W --showformat='${Status}\n' $MONGO | grep "install ok installed")
-echo "Checking for $MONGO: $MONGO_INSTALLED"
-if [ "" == "$MONGO_INSTALLED" ]; then
+MONGO_INSTALLED=$(isInstalled "${MONGO}")
+echo "Checking for $MONGO"
+if [ 0 == "${MONGO_INSTALLED}" ]; then
  wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
  echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
  sudo apt-get update
@@ -29,17 +35,17 @@ if [ "" == "$MONGO_INSTALLED" ]; then
 fi
 
 # Node.js
-NODE_INSTALLED=$(dpkg-query -W --showformat='${Status}\n' $NODE | grep "install ok installed")
-echo "Checking for $NODE: $NODE_INSTALLED"
-if [ "" == "$NODE_INSTALLED" ]; then
+NODE_INSTALLED=$(isInstalled "${NODE}")
+echo "Checking for $NODE"
+if [ 0 == "$NODE_INSTALLED" ]; then
  curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
  apt-get install -y build-essential nodejs
 fi
 
 # Yarn
-YARN_INSTALLED=$(dpkg-query -W --showformat='${Status}\n' $YARN | grep "install ok installed")
-echo "Checking for Yarn: ${YARN_INSTALLED}"
-if [ "" == "$YARN_INSTALLED" ]; then
+YARN_INSTALLED=$(isInstalled "${YARN}")
+echo "Checking for $YARN"
+if [ 0 == "$YARN_INSTALLED" ]; then
   curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
   echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
   sudo apt-get update
@@ -51,14 +57,25 @@ fi
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/vagrant/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
 # Install NPM
-sudo apt-get install npm -y
+NPM_INSTALLED=$(isInstalled "${NPM}");
+echo "Checking for $NPM"
+if [ 0 == "${NPM_INSTALLED}" ]; then
+  sudo apt-get install npm -y
+fi
 
-# Install Tmux
-sudo apt-get install tmux
+# Install TMUX
+TMUX_INSTALLED=$(isInstalled "${TMUX}");
+echo "Checking for $TMUX"
+if [ 0 == "${TMUX_INSTALLED}" ]; then
+  sudo apt-get install tmux
+fi
 
 # Install ESLint globally...
-## Make sure to install vim plugins, through vim :PluginInstall
-sudo npm install eslint -g 
+# Make sure to install vim plugins, through vim :PluginInstall
+IS_ESLINT_INSTALLED=$(npm list -g | grep eslint | wc -l);
+if [ 0 == "${IS_ESLINT_INSTALLED}" ]; then
+  sudo npm install eslint -g 
+fi
 
 # Install Vim-Plug package manager for Vim for vagrant user...
 curl -fLo /home/vagrant/.vim/autoload/plug.vim --create-dirs \
