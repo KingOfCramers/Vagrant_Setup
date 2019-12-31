@@ -21,6 +21,14 @@ if [ 0 == "${GIT_INSTALLED}" ]; then
  apt-get install -y $GIT
 fi
 
+# Set up Git username in machine...
+git config --global user.name "KingOfCramers"
+GIT_USER=$(git config user.name)
+if [ $GIT_USER != "KingOfCramers" ]; then
+  echo "Git username could not be set."
+  exit 1
+fi
+
 # MongoDB https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
 MONGO_INSTALLED=$(isInstalled "${MONGO}")
 echo "Checking for $MONGO"
