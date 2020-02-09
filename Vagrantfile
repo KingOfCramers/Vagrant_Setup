@@ -6,10 +6,10 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "./machine", "/home/vagrant", type: "virtualbox"
 
   config.vm.hostname = "myvm"
-	
+
   # Copy the path to the private key to login. Use Vagrant's default as a backup. https://ermaker.github.io/blog/2015/11/18/change-insecure-key-to-my-own-key-on-vagrant.html
-  config.ssh.private_key_path = ["~/.ssh/id_rsa", "~/.vagrant.d/insecure_private_key"] 
-  
+  config.ssh.private_key_path = ["~/.ssh/id_rsa", "~/.vagrant.d/insecure_private_key"]
+
   # Copy public key to VM.
   config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/authorized_keys"
 
@@ -23,8 +23,8 @@ Vagrant.configure("2") do |config|
   EOC
 
   # Open ports for Node.js and MongoDB
-  config.vm.network "forwarded_port", guest: 3000, host: 3000 # Node.js
-  config.vm.network "forwarded_port", guest: 27017, host: 27017 # MongoDB
+  config.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1" # Node.js
+  config.vm.network "forwarded_port", guest: 27017, host: 27017, host_ip: "127.0.0.1" # MongoDB
 
   # Open private network to allow access to local computer
   config.vm.network "private_network", ip: "192.168.10.2"
